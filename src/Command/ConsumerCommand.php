@@ -56,8 +56,14 @@ class ConsumerCommand extends Command
         $gate = $input->getArgument('gate');
         $gate = $this->gates->get($gate);
 
+        $memoryLimit = (int) $input->getOption('memory-limit');
+        // if the memory limit is 0, we assume you mean no limit
+        if (0 === $memoryLimit) {
+            $memoryLimit = null;
+        }
+
         $options = [
-            'memory_limit' => $input->getOption('memory-limit'),
+            'memory_limit' => $memoryLimit,
             'poll_interval' => $input->getOption('poll-interval'),
             'verbosity' => true === $input->getOption('disable-verbosity-propagation')
                 ? OutputInterface::VERBOSITY_QUIET
